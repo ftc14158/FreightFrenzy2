@@ -1,0 +1,13 @@
+How to set up wireless connection to robot controller:
+
+1. Start FTC robot controller app on robot phone
+
+2. Connect to DIRECT-xxx wifi network from the phone on the laptop
+
+3. Connect phone to laptop with USB cable
+
+4. Start tcpip server on phone with command  adb tcpip 5555
+
+5. Connect to phone over wifi with adb connect 192.168.49.1
+
+6. Unplug phone from USB
