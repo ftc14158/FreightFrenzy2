@@ -8,6 +8,11 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.function.BooleanSupplier;
 
+/**
+ * Color sensor subsystem for detecting if red or blue tape is below
+ * the sensor
+ */
+
 public class ColorSensorSubsystem extends SubsystemBase {
 
     /**

@@ -2,11 +2,11 @@
 
 Measured wheel ticks - actually 4 * teh ticks per revolution given on Andymark site
 
-Fixed bug in drivetrain set up - had FL motor listed twice in motor setup array by mistake
+Fixed bug in mecanumDrivetrain set up - had FL motor listed twice in motor setup array by mistake
 After fix, wheel encoders are reporting correct distance in mm
 
 Established that feed forward default param kv=1 overrides the PID parameters even if all set to 0
-Added config for PID and KVA coefficients and ste them up in drivetrain subsystem
+Added config for PID and KVA coefficients and ste them up in mecanumDrivetrain subsystem
 
 Added command to reset motors with latest coefficient constants when Y pressed on gamepad
 

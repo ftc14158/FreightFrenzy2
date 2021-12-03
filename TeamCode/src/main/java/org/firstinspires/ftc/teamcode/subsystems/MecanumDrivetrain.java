@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.Constants.RobotConfigConstants;
 
 import java.util.Arrays;
 
-public class Drivetrain extends SubsystemBase {
+public class MecanumDrivetrain extends SubsystemBase {
 
     private MotorEx m_frontLeft;
     private MotorEx m_frontRight;
@@ -57,7 +57,7 @@ public class Drivetrain extends SubsystemBase {
     private Pose2d m_pose;
 
 
-    public Drivetrain(HardwareMap hardwareMap, Telemetry telemetry, IMU imuSubsystem) {
+    public MecanumDrivetrain(HardwareMap hardwareMap, Telemetry telemetry, IMU imuSubsystem) {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
         this.imuSubsystem = imuSubsystem;

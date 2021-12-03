@@ -2,23 +2,23 @@ package org.firstinspires.ftc.teamcode.command;
 
 import android.util.Log;
 
-import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.controller.PIDFController;
-import com.arcrobotics.ftclib.util.MathUtils;
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.internal.system.RefCounted;
-import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Constants.DriveConstants;
-import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.MecanumDrivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.IMU;
 
 import static com.arcrobotics.ftclib.util.MathUtils.clamp;
 
+/**
+ * Command to try and rotate the mecanum drive to a given heading
+ */
+
 public class RotateToHeading extends CommandBase {
 
-    private Drivetrain m_drivetrain;
+    private MecanumDrivetrain m_Mecanum_drivetrain;
     private double m_targetHeading;
     private IMU m_imu;
 
@@ -26,8 +26,8 @@ public class RotateToHeading extends CommandBase {
 
     private Telemetry m_telemetry;
 
-    public RotateToHeading(Drivetrain drivetrain, IMU imu, double heding, Telemetry tel) {
-        m_drivetrain = drivetrain;
+    public RotateToHeading(MecanumDrivetrain mecanumDrivetrain, IMU imu, double heding, Telemetry tel) {
+        m_Mecanum_drivetrain = mecanumDrivetrain;
         m_targetHeading = heding;
         m_imu = imu;
         m_telemetry = tel;
@@ -61,7 +61,7 @@ public class RotateToHeading extends CommandBase {
 
         Log.w("ROTATE-TO-HEADING", "Heading = " + m_imu.getHeading() + ", target=" + m_pid.getSetPoint() + ", error=" + error + ", power=" + power );
 
-        m_drivetrain.drive( 0, 0, -power, false);
+        m_Mecanum_drivetrain.drive( 0, 0, -power, false);
 
     }
 
@@ -73,6 +73,6 @@ public class RotateToHeading extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        m_drivetrain.drive(0,0,0,false);
+        m_Mecanum_drivetrain.drive(0,0,0,false);
     }
 }
