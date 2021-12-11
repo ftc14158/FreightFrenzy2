@@ -59,19 +59,20 @@ public class RamseteFollow extends RamseteCommandEx {
      */
 
     public RamseteFollow(RobotContainer robot,
-                         Pose2d endPose,
+                         Supplier<Pose2d> endPoseSupplier,
 
                          List<Translation2d> additionalWaypoints,
-            boolean bReversed)
+            boolean bReversed,
+                         boolean bFaster)
 
                           {
 
 
         super( () -> { return TrajectoryGenerator.generateTrajectory( robot.drivetrain.getPose(),
                 additionalWaypoints,
-                endPose,
-                (new TrajectoryConfig(AutonomousConstants.TRAJ_MAX_VEL,
-                        AutonomousConstants.TRAJ_MAX_ACCEL).setReversed(bReversed) ) ); },
+                endPoseSupplier.get(),
+                (new TrajectoryConfig(bFaster ? AutonomousConstants.TRAJ_FAST_MAX_VEL : AutonomousConstants.TRAJ_MAX_VEL,
+                        bFaster ? AutonomousConstants.TRAJ_FAST_MAX_ACCEL : AutonomousConstants.TRAJ_MAX_ACCEL).setReversed(bReversed) ) ); },
                 robot.drivetrain::getPose,
                 new RamseteController(AutonomousConstants.RAMSETE_B, AutonomousConstants.RAMSETE_ZETA),
                 robot.drivetrain.getKinematics(),

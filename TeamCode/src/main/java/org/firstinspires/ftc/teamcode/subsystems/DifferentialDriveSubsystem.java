@@ -165,12 +165,31 @@ public class DifferentialDriveSubsystem extends SubsystemBase {
         m_pose = m_odometry.getPose();
 
 
-        // Draw the current position (pose) of the robot on the field image
-        // of the FTCLib Dashboard..
+        drawPoseOnDashboard();
+
+        m_robot.addTelem( "Pose", "x=" + m_pose.getX() + ", y=" + m_pose.getY() + ", heading=" + m_pose.getHeading() + ", rotDeg=" + m_pose.getRotation().getDegrees() + ", rads=" + m_pose.getRotation().getRadians() + ", sin=" + m_pose.getRotation().getSin() + ", cos="+ m_pose.getRotation().getCos()  );
+//        Log.w( "DRIVETRAIN", "Pose: x=" + m_pose.getX() + ", y=" + m_pose.getY() + ", heading=" + m_pose.getHeading() );
+
+
+//        telemetry.addData("Coefficients", m_Left.getVeloCoefficients()[0] + "," + m_Left.getVeloCoefficients()[1] + "," + m_Left.getVeloCoefficients()[2]  );
+//        telemetry.addData("Cycle time", m_timer.milliseconds() / cycles++);
+        m_robot.addTelem("Cycle time", m_timer.milliseconds() / cycles++);
+
+
+        m_robot.addTelem("Dists", "left=" + m_Left.getDistance() + ", right=" + m_Right.getDistance() );
+
+//        Log.w("DRIVETRAIN", "Velocity Left = " + m_Left.getVelocity() + ", Right = " + m_Right.getVelocity() );
+//        telemetry.update();
+
+    }
+
+    // Draw the current position (pose) of the robot on the field image
+    // of the FTCLib Dashboard..
 
 //        telemetry.addData( "Pose", "x=" + m_pose.getX() + ", y=" + m_pose.getY() );
-        // plot on graph
+    // plot on graph
 
+    public void drawPoseOnDashboard() {
         // get center of drivetrain position in inches
         Rotation2d rotPose = m_pose.getRotation();
         double x_inches = m_pose.getX() * (100. / 2.54);   // multiply meters by inches per meter
@@ -200,20 +219,6 @@ public class DifferentialDriveSubsystem extends SubsystemBase {
         m_robot.getTelemPacket().fieldOverlay().setStroke("yellow").setStrokeWidth(1).strokeLine(x_inches, y_inches,
 
                 x_inches + 14 * rotCos, y_inches + 14 * rotSin );
-
-        m_robot.addTelem( "Pose", "x=" + m_pose.getX() + ", y=" + m_pose.getY() + ", heading=" + m_pose.getHeading() + ", rotDeg=" + m_pose.getRotation().getDegrees() + ", rads=" + m_pose.getRotation().getRadians() + ", sin=" + m_pose.getRotation().getSin() + ", cos="+ m_pose.getRotation().getCos()  );
-//        Log.w( "DRIVETRAIN", "Pose: x=" + m_pose.getX() + ", y=" + m_pose.getY() + ", heading=" + m_pose.getHeading() );
-
-
-//        telemetry.addData("Coefficients", m_Left.getVeloCoefficients()[0] + "," + m_Left.getVeloCoefficients()[1] + "," + m_Left.getVeloCoefficients()[2]  );
-//        telemetry.addData("Cycle time", m_timer.milliseconds() / cycles++);
-        m_robot.addTelem("Cycle time", m_timer.milliseconds() / cycles++);
-
-
-        m_robot.addTelem("Dists", "left=" + m_Left.getDistance() + ", right=" + m_Right.getDistance() );
-
-//        Log.w("DRIVETRAIN", "Velocity Left = " + m_Left.getVelocity() + ", Right = " + m_Right.getVelocity() );
-//        telemetry.update();
 
     }
 

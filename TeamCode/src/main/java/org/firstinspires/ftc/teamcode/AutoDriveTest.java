@@ -47,14 +47,14 @@ public class AutoDriveTest extends CommandOpMode {
         // Create the main robot object that contains the various
         // subsystems etc
         m_robot = new RobotContainer( false, hardwareMap,
-                gamepad1);
+                gamepad1, gamepad2);
 
         // Create a command that will run every time in the loop to send back the telemetry to
         // the FTC dashboard
         schedule( new PerpetualCommand( new RunCommand( () -> { m_robot.sendTelem( dashboard );})));
 
         // set starting position of robot
-        m_robot.drivetrain.setPose(  AutonomousConstants.START_X, AutonomousConstants.START_Y, AutonomousConstants.START_HEADING);
+//        m_robot.drivetrain.setPose(  AutonomousConstants.START_X, AutonomousConstants.START_Y, AutonomousConstants.START_HEADING);
         // keep resetting motors at the startto ensure no lingering timestamp
 
 //        Log.w("DRIVETEST",  "Trajectory time = " + trajectory.getTotalTimeSeconds());
@@ -64,8 +64,9 @@ public class AutoDriveTest extends CommandOpMode {
 
         RamseteFollow x1 = new RamseteFollow(
                 m_robot,
-                new Pose2d( AutonomousConstants.TARGET_X, AutonomousConstants.TARGET_Y, Rotation2d.fromDegrees( AutonomousConstants.TARGET_HEADING ) ),
+                () -> new Pose2d( AutonomousConstants.TARGET_X, AutonomousConstants.TARGET_Y, Rotation2d.fromDegrees( AutonomousConstants.TARGET_HEADING ) ),
                 new ArrayList<Translation2d>(),
+                false,
                 false
                 );
 
@@ -73,9 +74,10 @@ public class AutoDriveTest extends CommandOpMode {
         // Create another command to drive in reverse back to the starting pose
         RamseteFollow x2 = new RamseteFollow(
                 m_robot,
-                new Pose2d( AutonomousConstants.START_X, AutonomousConstants.START_Y, Rotation2d.fromDegrees(AutonomousConstants.START_HEADING) ),
+                () -> new Pose2d( AutonomousConstants.START_X, AutonomousConstants.START_Y, Rotation2d.fromDegrees(AutonomousConstants.START_HEADING) ),
                 new ArrayList<Translation2d>(),
-                true
+                true,
+                false
 
         );
 

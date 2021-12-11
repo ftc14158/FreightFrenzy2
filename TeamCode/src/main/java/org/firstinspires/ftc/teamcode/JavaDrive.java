@@ -31,7 +31,7 @@ public class JavaDrive extends CommandOpMode {
     @Override
     public void initialize() {
         m_robot = new RobotContainer( true, hardwareMap,
-                gamepad1);
+                gamepad1, gamepad2);
 
         m_robot.drivetrain.resetMotors( true );
 

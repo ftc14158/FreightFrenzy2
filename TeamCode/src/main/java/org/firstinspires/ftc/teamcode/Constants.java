@@ -103,8 +103,10 @@ public class Constants {
         public static double TEST_FORWARD_SPEED = 0.4;
         public static double TEST_TURN_SPEED = 0.0;
 
-        public static double TRAJ_MAX_VEL = 0.4;
+        public static double TRAJ_MAX_VEL = 0.5;
         public static double TRAJ_MAX_ACCEL = 0.5;
+        public static double TRAJ_FAST_MAX_VEL = 0.8;
+        public static double TRAJ_FAST_MAX_ACCEL = 1.0;
         public static double RAMSETE_B = 100.0;
         public static double RAMSETE_ZETA = 1;
 
@@ -112,10 +114,11 @@ public class Constants {
         public static double START_Y = 1.8;
         public static double START_HEADING = 270;
 
-        public static double TARGET_X = -1;
-        public static double TARGET_Y = 1.3;
-        public static double TARGET_HEADING = 180;
+        public static double TARGET_X = -0.6;
+        public static double TARGET_Y = 1.2;
+        public static double TARGET_HEADING = 310;
 
+        public static double JERK_CYCLES = 1;
     }
 
     @Config

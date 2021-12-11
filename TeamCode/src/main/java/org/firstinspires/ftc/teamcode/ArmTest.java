@@ -16,7 +16,7 @@ public class ArmTest extends CommandOpMode {
     @Override
     public void initialize() {
         m_robot = new RobotContainer( false, hardwareMap,
-                gamepad1);
+                gamepad1, gamepad2);
 
         schedule( new InstantCommand().withTimeout( 1000 )
                 .andThen( new PositionArm(m_robot.arm, 200) )

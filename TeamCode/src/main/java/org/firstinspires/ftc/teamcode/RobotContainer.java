@@ -26,6 +26,7 @@ import org.firstinspires.ftc.teamcode.subsystems.IMU;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.RevIMUVertical;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,7 @@ public class RobotContainer {
 
     // Controller
     private final GamepadEx m_gamepad1;
+    private final GamepadEx m_gamepad2;
 
     public final ArmSubsystem arm;
     public final IntakeSubsystem intake;
@@ -53,7 +55,7 @@ public class RobotContainer {
 
     private TelemetryPacket m_telemPacket;
 
-    public RobotContainer(boolean bTeleOp, HardwareMap hardwareMap, Gamepad gamepad1) {
+    public RobotContainer(boolean bTeleOp, HardwareMap hardwareMap, Gamepad gamepad1, Gamepad gamepad2) {
 
         m_telemPacket = new TelemetryPacket();
 
@@ -81,14 +83,17 @@ public class RobotContainer {
         }
 
         m_gamepad1 = new GamepadEx(gamepad1);
+        m_gamepad2 = new GamepadEx(gamepad2);
 
         if (bTeleOp) {
             configureButtonBindings();
+            drivetrain.resetMotors(true);
+
         } else {
             // stop drivetrain if not being commanded otherwise during loop
             drivetrain.setDefaultCommand( new RunCommand( drivetrain::stop, drivetrain ) );
+            intake.setDefaultCommand( new RunCommand(intake::stop, intake ));
         }
-
 
     }
 
@@ -102,52 +107,17 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
      drivetrain.setDefaultCommand(
-             new DefaultDifferentialDrive(drivetrain , () -> m_gamepad1.getLeftX(),
-                     () -> m_gamepad1.getLeftY() / 2
+             new DefaultDifferentialDrive(drivetrain , () -> m_gamepad1.getLeftX() / 2,
+                     () -> m_gamepad1.getLeftY()
                      )
      );
 
      // make sure carousel stops if we are not telling it to do anything else
      carousel.setDefaultCommand( new RunCommand( carousel::stop, carousel) );
 
-/*        m_gamepad1.getGamepadButton(Button.DPAD_UP).whenPressed(new InstantCommand(
-                () -> arm.setPower(.5)))
-                .whenReleased(new InstantCommand(() -> arm.setPower(0)));
+     assignActionButtons(m_gamepad1);
+     assignActionButtons(m_gamepad2);
 
-        m_gamepad1.getGamepadButton(Button.DPAD_DOWN).whenPressed(new InstantCommand(
-                () -> arm.setPower(-.5)))
-                .whenReleased(new InstantCommand(() -> arm.setPower(0)));
-*/
-        m_gamepad1.getGamepadButton(Button.A).whenPressed(new InstantCommand(
-                () -> arm.goToPosition((int)Constants.ArmConstants.POSITION1)));
-
-        m_gamepad1.getGamepadButton(Button.B).whenPressed(new InstantCommand(
-                () -> arm.goToPosition((int)Constants.ArmConstants.POSITION2)));
-
-        m_gamepad1.getGamepadButton(Button.Y).whenPressed(new InstantCommand(
-                () -> arm.goToPosition((int)Constants.ArmConstants.POSITION3)));
-
-        // turn off arm motor so falls to bottom position
-        m_gamepad1.getGamepadButton(Button.X).whenPressed(new InstantCommand(
-                () -> arm.setPower(0) ) );
-
-        m_gamepad1.getGamepadButton(Button.LEFT_BUMPER).toggleWhenPressed(
-                new InstantCommand(intake::suck),
-                new InstantCommand(intake::stop)
-        );
-
-        m_gamepad1.getGamepadButton(Button.RIGHT_BUMPER).whenPressed(
-                new InstantCommand(intake::eject)
-        ).whenReleased(intake::stop);
-
-
-        m_gamepad1.getGamepadButton(Button.DPAD_LEFT).whenHeld(
-                new RunCommand(carousel::forward, carousel)
-        );
-
-        m_gamepad1.getGamepadButton(Button.DPAD_RIGHT).whenHeld(
-                new RunCommand(carousel::backward, carousel)
-        );
 
 
 //                .whenReleased( new InstantCommand( () -> m_armSubsystem.setPower(0)));
@@ -184,6 +154,47 @@ public class RobotContainer {
 */
     }
 
+    private void assignActionButtons(GamepadEx g) {
+
+        g.getGamepadButton(Button.DPAD_UP).whenPressed(new InstantCommand(
+                () -> arm.nudgePosition(20)));
+
+        g.getGamepadButton(Button.DPAD_DOWN).whenPressed(new InstantCommand(
+                () -> arm.nudgePosition(-20)));
+
+        g.getGamepadButton(Button.A).whenPressed(new InstantCommand(
+                () -> arm.goToLevel(1)));
+
+        g.getGamepadButton(Button.B).whenPressed(new InstantCommand(
+                () -> arm.goToLevel(2)));
+
+        g.getGamepadButton(Button.Y).whenPressed(new InstantCommand(
+                () -> arm.goToLevel(3)));
+
+        // turn off arm motor so falls to bottom position
+        g.getGamepadButton(Button.X).whenPressed(new InstantCommand(
+                () -> arm.goToLevel(0) ) );
+
+        g.getGamepadButton(Button.LEFT_BUMPER).toggleWhenPressed(
+                new InstantCommand(intake::suck),
+                new InstantCommand(intake::stop)
+        );
+
+        g.getGamepadButton(Button.RIGHT_BUMPER).whenPressed(
+                new InstantCommand(intake::eject)
+        ).whenReleased(intake::stop);
+
+
+        g.getGamepadButton(Button.DPAD_LEFT).whenHeld(
+                new RunCommand(carousel::forward, carousel)
+        );
+
+        g.getGamepadButton(Button.DPAD_RIGHT).whenHeld(
+                new RunCommand(carousel::backward, carousel)
+        );
+
+    }
+    
     public void addTelem(String name, Object value) {
         m_telemetryItems.put(name, value);
     }

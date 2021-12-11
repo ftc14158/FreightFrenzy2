@@ -35,6 +35,7 @@ public class ArmSubsystem extends SubsystemBase {
     private RobotContainer m_robot;
 
     private boolean m_bPositioning = false;
+    private int m_iTargetPosition = 0;
 
     private ArmFeedforward m_positionController;
     private PController m_PController;
@@ -75,7 +76,8 @@ public class ArmSubsystem extends SubsystemBase {
 //        armMotor.setRunMode(Motor.RunMode.PositionControl );
         // armMotor.setPositionTolerance( 0 );
         m_PController.setSetPoint(position);
-        armMotor.setTargetPosition(position);
+        m_iTargetPosition = position;
+        armMotor.setTargetPosition(m_iTargetPosition);
 //        armMotor.set(1);
         m_bPositioning = true;
     }
@@ -168,8 +170,40 @@ public class ArmSubsystem extends SubsystemBase {
 
     // return arm to home position (ground)
     public void returnToHome() {
-        setPower(0);  // will fall to zero due to gravity
+        setPower(0);  // will fall to zero due to gravi
+    }
 
+    // set arm level 0, 1, 2, 3
+    public void goToLevel(int level) {
 
+        switch (level) {
+            case 0:
+                returnToHome();
+                break;
+
+            case 1:
+                goToPosition((int)Constants.ArmConstants.POSITION1);
+                break;
+
+            case 2:
+                goToPosition((int)Constants.ArmConstants.POSITION2);
+                break;
+
+            case 3:
+                goToPosition((int)Constants.ArmConstants.POSITION3);
+                break;
+        }
+
+    }
+
+    /**
+     * Allow the current arm target position to be adjusted
+     */
+    public void nudgePosition(int amount) {
+        if (m_bPositioning) {
+            m_iTargetPosition += amount;
+            if (m_iTargetPosition < 0) m_iTargetPosition = 0;
+            goToPosition(m_iTargetPosition);
+        }
     }
 }
